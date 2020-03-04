@@ -1,10 +1,7 @@
 #!/usr/bin/python3.8
 # -*- coding: utf-8 -*-
 
-import os
-import random
-
-import requests
+import os, random, requests, threading
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/72.0'
@@ -25,8 +22,10 @@ def parse_audio():
 
 
 if __name__ in '__main__':
-    if os.path.exists('audio'):
-        parse_audio()
-    else:
+    if not os.path.exists('audio'):
         os.mkdir('audio')
-        parse_audio()
+    threads = []
+    for i in range(int(input("Thread count: "))):
+        threads.append(threading.Thread(target=parse_audio))
+        threads[i].start()
+    print("All threads started")
